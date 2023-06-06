@@ -32,3 +32,4 @@ Route `/posts`. Below is a table of supported operations with `posts` as example
 
 ![allure tests](https://github.com/uxelisol/postman/blob/main/allureScreenshot2.png)
 
+
