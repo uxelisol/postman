@@ -1,0 +1,257 @@
+{
+	"info": {
+		"_postman_id": "2e6b5987-2d52-4568-b4c1-6146da191f2f",
+		"name": "jsonplaceholder",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "23566660"
+	},
+	"item": [
+		{
+			"name": "Get all posts and verify the status code",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const schema = {\r",
+							"    \"type\":\"array\",\r",
+							"    \"items\":\r",
+							"    {\r",
+							"        \"type\":\"object\",\r",
+							"        \"properties\":\r",
+							"        {\r",
+							"            \"id\":{\"type\":\"integer\"},\r",
+							"            \"userId\":{\"type\":\"integer\"},\r",
+							"            \"title\":{\"type\":\"string\"},\r",
+							"            \"body\":{\"type\":\"string\"},\r",
+							"        }\r",
+							"    }\r",
+							"}\r",
+							"pm.test(\"Response time is less than 500ms\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+							"});\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"pm.test(\"Content-Type is present\", function () {\r",
+							"    pm.response.to.have.header(\"Content-Type\");\r",
+							"});\r",
+							"pm.test(\"Response schema is correct\",function(){\r",
+							"    pm.response.to.have.jsonSchema(schema);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://jsonplaceholder.typicode.com/posts",
+					"protocol": "https",
+					"host": [
+						"jsonplaceholder",
+						"typicode",
+						"com"
+					],
+					"path": [
+						"posts"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create a new post and verify the response",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const schema = {",
+							"    \"type\":\"object\",",
+							"    \"properties\":",
+							"        {",
+							"            \"id\":{\"type\":\"integer\"},",
+							"        }",
+							"}",
+							"pm.test(\"Response time is less than 900ms\", function () {",
+							"    pm.expect(pm.response.responseTime).to.be.below(900);",
+							"});",
+							"pm.test(\"Status code is 201\", function () {",
+							"    pm.response.to.have.status(201);",
+							"});",
+							"pm.test(\"Content-Type is present\", function () {",
+							"    pm.response.to.have.header(\"Content-Type\");",
+							"});",
+							"pm.test(\"Response schema is correct\",function(){",
+							"    pm.response.to.have.jsonSchema(schema);",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"title\": \"Lorem ipsum dolor sit amet\",\r\n    \"body\": \"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed lacinia risus tempor arcu dignissim, ac sodales est commodo. Suspendisse porttitor lacinia commodo. Cras ligula ex, pellentesque ut tellus eu, tincidunt vestibulum arcu. \"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://jsonplaceholder.typicode.com/posts",
+					"protocol": "https",
+					"host": [
+						"jsonplaceholder",
+						"typicode",
+						"com"
+					],
+					"path": [
+						"posts"
+					],
+					"query": [
+						{
+							"key": "title",
+							"value": "Lorem ipsum dolor sit amet",
+							"disabled": true
+						},
+						{
+							"key": "body",
+							"value": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed lacinia risus tempor arcu dignissim, ac sodales est commodo. Suspendisse porttitor lacinia commodo. Cras ligula ex, pellentesque ut tellus eu, tincidunt vestibulum arcu. ",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update an existing post and verify the update",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = pm.response.json();",
+							"const schema = {",
+							"    \"type\":\"object\",",
+							"    \"properties\":",
+							"        {",
+							"            \"title\":{\"type\":\"string\"},",
+							"            \"body\":{\"type\":\"string\"},",
+							"            \"id\":{\"type\":\"integer\"}",
+							"        },",
+							"}",
+							"pm.test(\"Response for Update product time is less than 500ms\", function () {",
+							"    pm.expect(pm.response.responseTime).to.be.below(500);",
+							"});",
+							"",
+							"pm.test(\"Status for Update product code is 201\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Content-Type Update product  is present\", function () {",
+							"    pm.response.to.have.header(\"Content-Type\");",
+							"});",
+							"",
+							"pm.test(\"Response schema for Update product is correct\",function(){",
+							"    pm.response.to.have.jsonSchema(schema);",
+							"});",
+							"pm.test(\"Title for Updated post is correct\", () => {",
+							"  pm.expect(jsonData.title).to.eql(\"Updated text\");",
+							"});",
+							"pm.test(\"Body for Updated post is correct\", () => {",
+							"  pm.expect(jsonData.body).to.eql(\"Lorem ipsum dolor sit amet1\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"title\": \"Updated text\",\r\n    \"body\": \"Lorem ipsum dolor sit amet1\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://jsonplaceholder.typicode.com/posts/1",
+					"protocol": "https",
+					"host": [
+						"jsonplaceholder",
+						"typicode",
+						"com"
+					],
+					"path": [
+						"posts",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete an existing post and verify the deletion",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"",
+							"pm.test(\"Response for Remove product time is less than 500ms\", function () {",
+							"    pm.expect(pm.response.responseTime).to.be.below(500);",
+							"});",
+							"",
+							"pm.test(\"Status for Remove product code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Content-Type Remove product  is present\", function () {",
+							"    pm.response.to.have.header(\"Content-Type\");",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "https://jsonplaceholder.typicode.com/posts/1",
+					"protocol": "https",
+					"host": [
+						"jsonplaceholder",
+						"typicode",
+						"com"
+					],
+					"path": [
+						"posts",
+						"1"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"variable": [
+		{
+			"key": "siteUrl",
+			"value": "https://jsonplaceholder.typicode.com"
+		}
+	]
+}
